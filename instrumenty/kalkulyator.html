@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Калькулятор освещённости помещения — онлайн расчёт</title>
+<meta name="description" content="Рассчитайте нужное количество люменов и светильников для кухни, офиса, склада. Бесплатный онлайн-калькулятор освещённости.">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="/" class="logo">Люмен<span class="dot">.</span></a>
+    <nav class="main-nav">
+      <a href="/kuhnya/raschet-osvescheniya-kuhni.html">Кухня</a>
+      <a href="/proizvodstvo/avariynoe-osveschenie-sklada.html">Производство</a>
+      <a href="/instrumenty/kalkulyator.html">Калькулятор</a>
+      <a href="/magazin/">Магазин</a>
+      <a href="/o-sayte/">О сайте</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<article class="article">
+  <div class="narrow">
+    <div class="breadcrumbs"><a href="/">Главная</a> → Инструменты</div>
+    <h1>Калькулятор освещённости помещения</h1>
+    <div class="meta">Простой расчёт люменов и количества светильников</div>
+
+    <p>Введите параметры помещения — калькулятор посчитает нужный световой поток и количество светильников. Расчёт по нормам СП 52.13330.</p>
+
+    <div class="calc">
+      <div class="calc-row">
+        <label>Тип помещения</label>
+        <select id="roomType">
+          <option value="150">Кухня, спальня, жилая — 150 лк</option>
+          <option value="200">Детская, склад, производство — 200 лк</option>
+          <option value="300">Офис, магазин, мойка — 300 лк</option>
+          <option value="100">Коридор, лестница — 100 лк</option>
+          <option value="75">Парковка — 75 лк</option>
+          <option value="10">Улица — 10 лк</option>
+        </select>
+      </div>
+      <div class="calc-row">
+        <label>Площадь, м²</label>
+        <input type="number" id="area" value="10" min="1" step="0.5">
+      </div>
+      <div class="calc-row">
+        <label>Высота потолка</label>
+        <select id="height">
+          <option value="1">до 2,7 м</option>
+          <option value="1.15">2,7–3,2 м</option>
+          <option value="1.3">3,2–4,0 м</option>
+          <option value="1.5">выше 4,0 м</option>
+        </select>
+      </div>
+      <div class="calc-row">
+        <label>Световой поток одного светильника, лм</label>
+        <input type="number" id="lumensPer" value="800" min="100" step="50">
+      </div>
+
+      <div class="calc-result">
+        <div class="row"><span>Нужно люменов (с запасом):</span><span id="totalLumens">—</span></div>
+        <div class="row"><span>Количество светильников:</span><span id="count">—</span></div>
+        <div class="row"><span>Ориентировочная мощность LED:</span><span id="power">—</span></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p>Расчёт учитывает запас 20% на потери света и старение светодиодов. Для высоких потолков и тёмных поверхностей можно добавить ещё 10–20%.</p>
+    </div>
+
+    <div class="cta-block">
+      <h3>Подобрать светильники</h3>
+      <p>Проверенные магазины и маркетплейсы с подходящим ассортиментом.</p>
+      <a class="btn" href="/magazin/">Перейти в магазин →</a>
+    </div>
+
+  </div>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>© 2026 Люмен. Блог об освещении.</div>
+    <div class="foot-nav">
+      <a href="/o-sayte/">О сайте</a>
+      <a href="/magazin/">Магазин</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+function calc(){
+  const norm = +$('roomType').value;
+  const area = +$('area').value || 0;
+  const kH = +$('height').value;
+  const per = +$('lumensPer').value || 800;
+
+  const total = Math.round(area * norm * kH * 1.2);
+  const count = Math.max(1, Math.ceil(total / per));
+  const power = Math.round(total / 100);
+
+  $('totalLumens').textContent = total.toLocaleString('ru-RU') + ' лм';
+  $('count').textContent = count + ' шт.';
+  $('power').textContent = '≈ ' + power + ' Вт';
+}
+['roomType','area','height','lumensPer'].forEach(id => {
+  $(id).addEventListener('input', calc);
+  $(id).addEventListener('change', calc);
+});
+calc();
+</script>
+
+</body>
+</html>
